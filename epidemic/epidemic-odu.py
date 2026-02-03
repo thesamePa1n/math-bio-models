@@ -9,7 +9,6 @@ def sis(y, t, beta, gamma, mu):
     didt = beta * s * i - gamma * i - mu * i
     return [dsdt, didt]
 
-
 beta = 0.5  # Коэффициент передачи инфекции
 gamma = 0.1  # Коэффициент выздоровления
 mu = 0.001  # Коэффициент рождаемости/смертности
@@ -18,8 +17,8 @@ t = np.linspace(0, 100, 101)
 
 sol = odeint(sis, y0, t, args=(beta, gamma, mu))
 
-plt.plot(t, sol[:, 0], 'b', label='Susceptible (S)')
-plt.plot(t, sol[:, 1], 'r', label='Infected (I)')
+plt.plot(t, sol[:, 0], 'b', label='Восприимчивые (S)')
+plt.plot(t, sol[:, 1], 'r', label='Инфицированные (I)')
 plt.legend()
 plt.xlabel('Время (t)')
 plt.ylabel('Доля популяции')
