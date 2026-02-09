@@ -1,33 +1,30 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-
 def progonka(a, b, c, d):
     n = len(d)
-    cp = np.zeros(n-1)
-    dp = np.zeros(n)
+    alpha = np.zeros(n-1)
+    betta = np.zeros(n)
 
-    cp[0] = c[0] / b[0]
-    dp[0] = d[0] / b[0]
+    alpha[0] = c[0] / b[0]
+    print(alpha)
+    betta[0] = d[0] / b[0]
 
     for i in range(1, n-1):
-        denom = b[i] - a[i-1] * cp[i-1]
-        cp[i] = c[i] / denom
-        dp[i] = (d[i] - a[i-1] * dp[i-1]) / denom
+        denominator = b[i] - a[i-1] * alpha[i-1]
+        alpha[i] = c[i] / denominator
+        betta[i] = (d[i] - a[i-1] * betta[i-1]) / denominator
 
-    dp[-1] = (d[-1] - a[-2] * dp[-2]) / (b[-1] - a[-2] * cp[-2])
+    betta[-1] = (d[-1] - a[-2] * betta[-2]) / (b[-1] - a[-2] * alpha[-2])
 
     x = np.zeros(n)
-    x[-1] = dp[-1]
+    x[-1] = betta[-1]
     for i in reversed(range(n-1)):
-        x[i] = dp[i] - cp[i] * x[i+1]
+        x[i] = betta[i] - alpha[i] * x[i+1]
 
     return x
 
 def implicit_diffusion(u, d, dt, dx):
-    if d == 0.0:
-        return u.copy()
-
     r = d * dt / dx**2
     n = len(u)
 
@@ -54,11 +51,6 @@ delta= 0.006 # смертность, вызванная заболеванием
 d1, d2, d3, d4, d5 = 0.025, 0.01, 0.001, 0.0, 0.0 #коэффициенты диффузии
 dx = 0.1
 dt = 0.03
-
-for k, dk in enumerate([d1, d2, d3, d4, d5], start=1):
-    r = dk * dt / dx**2
-    if r > 0.5 + 1e-12:
-        print("Условие устойчивости нарушено")
 
 x = np.arange(-2.0, 2.0 + dx/2, dx)
 nx = x.size
@@ -90,7 +82,6 @@ for n in range(nt + 1):
     if n == nt:
         break
     N = S + E + I + J + R
-    N = np.maximum(N, 1e-12)
 
     infection = beta * (I + q*E + l_rrisk*J) / N
 
@@ -99,12 +90,6 @@ for n in range(nt + 1):
     I_half = I + dt * ( kappa*E - (mu + alpha + gamma1 + delta)*I)
     J_half = J + dt * ( alpha*I - (mu + gamma2 + delta)*J)
     R_half = R + dt * ( gamma1*I + gamma2*J - mu*R)
-
-    S_half = np.maximum(S_half, 0.0)
-    E_half = np.maximum(E_half, 0.0)
-    I_half = np.maximum(I_half, 0.0)
-    J_half = np.maximum(J_half, 0.0)
-    R_half = np.maximum(R_half, 0.0)
 
     S = implicit_diffusion(S_half, d1, dt, dx)
     E = implicit_diffusion(E_half, d2, dt, dx)
