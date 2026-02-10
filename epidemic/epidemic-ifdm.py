@@ -7,7 +7,6 @@ def progonka(a, b, c, d):
     betta = np.zeros(n)
 
     alpha[0] = c[0] / b[0]
-    print(alpha)
     betta[0] = d[0] / b[0]
 
     for i in range(1, n-1):
