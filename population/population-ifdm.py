@@ -82,8 +82,22 @@ for j in range(N):
   for i in range(N-1, 0, -1):
     v1[i][j+1] = v1[i+1][j+1]*alpha[i+1]+beta[i+1]
   
-plt.plot(range(N), u1[1:, 50], color="blue", label="u1(x, t=50)")
-plt.plot(range(N), u2[1:, 50], color="green", label="u2(x, t=50)")
-plt.plot(range(N), v1[1:, 50], color="red", label="v(x, t=50)")
+fig, axes = plt.subplots(1, 3, figsize=(15, 5))
+
+axes[0].plot(range(N), u1[1:, 0], color="blue", label="u1(x, t=0)")
+axes[0].plot(range(N), u2[1:, 0], color="green", label="u2(x, t=0)")
+axes[0].plot(range(N), v1[1:, 0], color="red", label="v(x, t=0)")
+axes[0].legend()
+
+axes[1].plot(range(N), u1[1:, 10], color="blue", label="u1(x, t=10)")
+axes[1].plot(range(N), u2[1:, 10], color="green", label="u2(x, t=10)")
+axes[1].plot(range(N), v1[1:, 10], color="red", label="v(x, t=10)")
+axes[1].legend()
+
+axes[2].plot(range(N), u1[1:, 20], color="blue", label="u1(x, t=20)")
+axes[2].plot(range(N), u2[1:, 20], color="green", label="u2(x, t=20)")
+axes[2].plot(range(N), v1[1:, 20], color="red", label="v(x, t=20)")
+
+plt.tight_layout()
 plt.legend()
 plt.show()
