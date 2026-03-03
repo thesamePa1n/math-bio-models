@@ -6,8 +6,10 @@ mu1, mu2 = 1.4, 1.4
 D1 = 0.001 * mu1
 D2 = 0.0000001 * mu2
 
-def g1(t): return 0.002 * t
-def g3(t): return 0.005 * t
+def g1(t): 
+  return 0.002 * t
+def g3(t): 
+  return 0.005 * t
 
 def f1(u1, u3, t):
     return mu1*u1 - mu1*u1*u3 - gamma1*u1*u3 - g1(t)*u1
